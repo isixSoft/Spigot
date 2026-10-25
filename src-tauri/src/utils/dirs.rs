@@ -12,12 +12,12 @@ use tauri::Manager as _;
 // 互相抢同一把单实例锁,两个应用直接打架。换成独立 id 之后两者可以并存,互不干扰。
 // 代价是 Spigot 第一次启动是全新配置,不会继承 Clash Verge Rev 里已有的订阅。
 #[cfg(not(feature = "verge-dev"))]
-pub static APP_ID: &str = "io.github.zhourg2010.spigot";
+pub static APP_ID: &str = "io.github.isixsoft.spigot";
 #[cfg(not(feature = "verge-dev"))]
 pub static BACKUP_DIR: &str = "spigot-backup";
 
 #[cfg(feature = "verge-dev")]
-pub static APP_ID: &str = "io.github.zhourg2010.spigot.dev";
+pub static APP_ID: &str = "io.github.isixsoft.spigot.dev";
 #[cfg(feature = "verge-dev")]
 pub static BACKUP_DIR: &str = "spigot-backup-dev";
 
