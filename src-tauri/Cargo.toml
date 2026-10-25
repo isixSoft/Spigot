@@ -25,7 +25,7 @@ clippy = ["tauri/test"]
 tracing = []
 
 [package.metadata.bundle]
-identifier = "io.github.zhourg2010.spigot"
+identifier = "io.github.isixsoft.spigot"
 
 [build-dependencies]
 tauri-build = { version = "2.6.3", features = [] }
