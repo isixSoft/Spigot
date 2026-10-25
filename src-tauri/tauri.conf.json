@@ -3,7 +3,7 @@
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
   "bundle": {
     "active": true,
-    "longDescription": "Spigot:在 Clash Verge Rev 基础上增加了「一键推送美国节点到 Deno」的自用客户端。",
+    "longDescription": "Spigot:\u5728 Clash Verge Rev \u57fa\u7840\u4e0a\u589e\u52a0\u4e86\u300c\u4e00\u952e\u63a8\u9001\u7f8e\u56fd\u8282\u70b9\u5230 Deno\u300d\u7684\u81ea\u7528\u5ba2\u6237\u7aef\u3002",
     "icon": [
       "icons/32x32.png",
       "icons/128x128.png",
@@ -17,7 +17,7 @@
     "externalBin": ["sidecar/verge-mihomo", "sidecar/verge-mihomo-alpha"],
     "copyright": "GNU General Public License v3.0",
     "category": "DeveloperTool",
-    "shortDescription": "Spigot — 基于 Clash Verge Rev 修改",
+    "shortDescription": "Spigot \u2014 \u57fa\u4e8e Clash Verge Rev \u4fee\u6539",
     "createUpdaterArtifacts": false
   },
   "build": {
@@ -28,12 +28,12 @@
     "removeUnusedCommands": true
   },
   "productName": "Spigot",
-  "identifier": "io.github.zhourg2010.spigot",
+  "identifier": "io.github.isixsoft.spigot",
   "plugins": {
     "updater": {
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEQyOEMyRjBCQkVGOUJEREYKUldUZnZmbStDeStNMHU5Mmo1N24xQXZwSVRYbXA2NUpzZE5oVzlqeS9Bc0t6RVV4MmtwVjBZaHgK",
       "endpoints": [
-        "https://github.com/zhourg2010/Spigot/releases/download/updater/update.json"
+        "https://github.com/isixSoft/Spigot/releases/download/updater/update.json"
       ],
       "windows": {
         "installMode": "passive"
