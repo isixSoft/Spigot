@@ -65,7 +65,7 @@ const latest =
   i >= 0
     ? args[i + 1] ?? ''
     : await fetchLatest(
-        process.env.GITHUB_REPOSITORY ?? 'zhourg2010/Spigot',
+        process.env.GITHUB_REPOSITORY ?? 'isixSoft/Spigot',
         process.env.GITHUB_TOKEN ?? '',
       )
 
