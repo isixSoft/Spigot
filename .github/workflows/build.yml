@@ -111,35 +111,40 @@ jobs:
       - run: pnpm check:caps
       - run: pnpm test
 
+  # 选矩阵:手动跑且选了 Windows-x64 时只出一条腿,省 runner。
+  # push / tag / platform=all 仍是四平台。
+  matrix-select:
+    runs-on: ubuntu-latest
+    outputs:
+      include: ${{ steps.pick.outputs.include }}
+    steps:
+      - id: pick
+        env:
+          EVENT: ${{ github.event_name }}
+          PLATFORM: ${{ inputs.platform }}
+        run: |
+          set -euo pipefail
+          ALL='[{"os":"macos-latest","target":"aarch64-apple-darwin","label":"macOS-Apple芯片"},{"os":"macos-latest","target":"x86_64-apple-darwin","label":"macOS-Intel"},{"os":"windows-latest","target":"x86_64-pc-windows-msvc","label":"Windows-x64"},{"os":"ubuntu-22.04","target":"x86_64-unknown-linux-gnu","label":"Linux-x64"}]'
+          WIN='[{"os":"windows-latest","target":"x86_64-pc-windows-msvc","label":"Windows-x64"}]'
+          if [ "$EVENT" = "workflow_dispatch" ] && [ "${PLATFORM:-}" = "Windows-x64" ]; then
+            echo "只构建 Windows-x64"
+            echo "include=$WIN" >> "$GITHUB_OUTPUT"
+          else
+            echo "全平台矩阵"
+            echo "include=$ALL" >> "$GITHUB_OUTPUT"
+          fi
+
   build:
-    needs: version
+    needs: [version, matrix-select]
     strategy:
       # 一个平台挂掉不影响其他平台继续出包
       fail-fast: false
       matrix:
-        include:
-          - os: macos-latest
-            target: aarch64-apple-darwin
-            label: macOS-Apple芯片
-          - os: macos-latest
-            target: x86_64-apple-darwin
-            label: macOS-Intel
-          - os: windows-latest
-            target: x86_64-pc-windows-msvc
-            label: Windows-x64
-          - os: ubuntu-22.04
-            target: x86_64-unknown-linux-gnu
-            label: Linux-x64
+        include: ${{ fromJSON(needs.matrix-select.outputs.include) }}
 
     runs-on: ${{ matrix.os }}
     # Tauri 构建慢,给足时间;卡住的话也不至于一直占着 runner
     timeout-minutes: 90
-    # 手动跑时可只出 Windows-x64,省掉 mac/linux 的 runner 时间和排队。
-    # push / tag 触发仍走全矩阵(inputs.platform 为空)。
-    if: >
-      github.event_name != 'workflow_dispatch'
-      || inputs.platform == 'all'
-      || matrix.label == inputs.platform
 
     steps:
       - uses: actions/checkout@v5
