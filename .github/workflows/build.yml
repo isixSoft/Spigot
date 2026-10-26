@@ -4,7 +4,7 @@
 #   - 打 tag v*             → 构建并发一个 GitHub Release(**只挂 Windows 便携版 zip**)
 #   - 推 main               → 只构建,产物挂在这次运行的 Artifacts 里
 #   - 手动跑(workflow_dispatch)→ 勾了 release 才发布;填了版本号就当正式版发,
-#                                 留空则发成 dev-<运行号> 的预发布
+#                                 留空则发成 dev-<运行号> 预发布
 #
 # 这份配置是从 nodes-sub 仓库的 .github/workflows/build-client.yml 搬过来的。那边源码在
 # client/ 子目录里,所以到处都要带 client 前缀;这个仓库整个就是客户端,前缀全部去掉了。
@@ -33,6 +33,13 @@ on:
         description: "版本号。auto = 在上一个正式版基础上 +1(推荐);填 vX.Y.Z 则用这个;留空发成 dev-<运行号> 预发布"
         type: string
         default: 'auto'
+      platform:
+        description: '构建哪些平台。日常自用选 Windows-x64 即可,全量回归再选 all'
+        type: choice
+        options:
+          - Windows-x64
+          - all
+        default: Windows-x64
 
 # 同一分支上新的提交会取消还在跑的旧构建,免得排队浪费额度
 concurrency:
@@ -127,6 +134,12 @@ jobs:
     runs-on: ${{ matrix.os }}
     # Tauri 构建慢,给足时间;卡住的话也不至于一直占着 runner
     timeout-minutes: 90
+    # 手动跑时可只出 Windows-x64,省掉 mac/linux 的 runner 时间和排队。
+    # push / tag 触发仍走全矩阵(inputs.platform 为空)。
+    if: >
+      github.event_name != 'workflow_dispatch'
+      || inputs.platform == 'all'
+      || matrix.label == inputs.platform
 
     steps:
       - uses: actions/checkout@v5
@@ -236,7 +249,7 @@ jobs:
       #
       # 关键不在"打了个 zip",而在 zip 里那个空的 .config/PORTABLE ——
       # dirs.rs 的 init_portable_flag() 认这个文件,认到了就把配置目录切到
-      # exe 旁边的 .config\<APP_ID>,而不是 %APPDATA%。所以这一份是真便携:
+      # exe 旁边的 .config\\<APP_ID>,而不是 %APPDATA%。所以这一份是真便携:
       # 整个文件夹拷走设置跟着走,删掉文件夹系统里不留任何痕迹。
       #
       # 脚本是上游的 scripts/portable.mjs,Spigot 改了 release 目录和主程序名 ——
@@ -361,7 +374,7 @@ jobs:
             - Windows：SmartScreen 提示时点「更多信息 → 仍要运行」
 
             **只提供 Windows 便携版**(`..._x64_portable.zip`)：解压即用，不用安装。
-            配置存在 exe 旁边的 `.config\` 里而不是 `%APPDATA%`，整个文件夹拷走设置跟着走，
+            配置存在 exe 旁边的 `.config\\` 里而不是 `%APPDATA%`，整个文件夹拷走设置跟着走，
             删掉文件夹系统里不留任何痕迹(注册表也不写)。
             需要系统已有 WebView2 运行时(Win10 较新版本和 Win11 都自带)。
 
