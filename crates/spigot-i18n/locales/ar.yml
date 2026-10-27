@@ -1,0 +1,93 @@
+_version: 1
+notifications:
+  dashboardToggled:
+    title: لوحة التحكم
+    body: تم تحديث حالة ظهور لوحة التحكم.
+  clashModeChanged:
+    title: تبديل الوضع
+    body: تم التبديل إلى {mode}.
+  systemProxyToggled:
+    title: وكيل النظام
+    'on': تم تفعيل وكيل النظام.
+    'off': تم تعطيل وكيل النظام.
+  systemProxyFailed:
+    title: وكيل النظام
+    body: تعذر تعيين وكيل النظام. افتح Clash Verge لمعرفة السبب.
+  systemProxyGuardStopped:
+    title: حارس وكيل النظام
+    body: توقف الحارس بعد عدة محاولات فاشلة. افتح Clash Verge لمعرفة السبب.
+  tunModeToggled:
+    title: وضع TUN
+    'on': تم تفعيل وضع TUN.
+    'off': تم تعطيل وضع TUN.
+  lightweightModeEntered:
+    title: الوضع الخفيف
+    body: تم الدخول إلى الوضع الخفيف.
+  profilesReactivated:
+    title: الملفات الشخصية
+    body: تم إعادة تفعيل الملف الشخصي.
+  appQuit:
+    title: على وشك الخروج
+    body: Clash Verge على وشك الخروج.
+  appHidden:
+    title: التطبيق مخفي
+    body: Clash Verge يعمل في الخلفية.
+  updateReady:
+    title: تحديث Clash Verge
+    body: تم تنزيل إصدار جديد (v{version}) وهو جاهز للتثبيت.
+    installNow: تثبيت الآن
+    later: لاحقاً
+service:
+  adminInstallPrompt: يتطلب تثبيت خدمة Clash Verge صلاحيات المسؤول.
+  adminUninstallPrompt: يتطلب إلغاء تثبيت خدمة Clash Verge صلاحيات المسؤول.
+launchGuard:
+  currentExeError: 'تعذر تحديد موقع التطبيق: {error}'
+  homeDirError: 'تعذر تحديد دليل المنزل للمستخدم الحالي. سيتم إنهاء التطبيق: {error}'
+  translocated: يقوم macOS بتشغيل هذا التطبيق من مسار App Translocation مؤقت. في Finder، انقله يدوياً إلى /Applications أو ~/Applications ثم أعد فتحه.
+  rejected: |-
+    يجب تشغيل هذا التطبيق من مجلد Applications.
+
+    {reason}
+  notInBundle: الملف التنفيذي ليس داخل حزمة التطبيق.
+  canonicalizeBundleError: 'تعذر حل مسار حزمة التطبيق: {error}'
+  bundleNameError: تعذر تحديد اسم حزمة التطبيق. سيتم إنهاء التطبيق.
+  replacePrompt: يوجد تطبيق بالفعل في {destination}. هل تريد استبداله وإعادة التشغيل من Applications؟
+  movePrompt: لبدء خدمة الخلفية بأمان، يجب نقل التطبيق إلى {destination}. هل تريد نقله وإعادة تشغيله الآن؟
+  createApplicationsDirError: 'تعذر إنشاء مجلد Applications: {error}'
+  moveFailed: فشل نقل التطبيق. انقله يدوياً في Finder وحاول مرة أخرى.
+  replaceFailed: 'تعذر استبدال التطبيق الحالي بأمان: {error}'
+  relaunchFailed: تم نسخ التطبيق، لكن تعذر إعادة تشغيله تلقائياً. افتحه يدوياً من Applications.
+  cancel: إلغاء
+  move: نقل
+  ok: موافق
+tray:
+  dashboard: لوحة التحكم
+  ruleMode: وضع القواعد
+  globalMode: الوضع العام
+  directMode: الوضع المباشر
+  outboundModes: أوضاع الصادر
+  rule: قواعد
+  direct: مباشر
+  global: عام
+  profiles: الملفات الشخصية
+  proxies: الوكلاء
+  systemProxy: وكيل النظام
+  tunMode: وضع TUN
+  closeAllConnections: إغلاق جميع الاتصالات
+  lightweightMode: الوضع الخفيف
+  copyEnv: نسخ متغيرات البيئة
+  confDir: دليل التكوين
+  coreDir: دليل النواة
+  logsDir: دليل السجلات
+  openDir: فتح الدليل
+  appLog: سجل التطبيق
+  coreLog: سجل النواة
+  restartClash: إعادة تشغيل نواة Clash
+  restartApp: إعادة تشغيل التطبيق
+  vergeVersion: إصدار Verge
+  more: المزيد
+  exit: خروج
+  tooltip:
+    systemProxy: وكيل النظام
+    tun: TUN
+    profile: ملف شخصي
