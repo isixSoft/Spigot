@@ -4,7 +4,10 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-compact_str = { workspace = true }
-flexi_logger = { workspace = true }
 log = { workspace = true }
 tokio = { workspace = true }
+compact_str = { workspace = true }
+flexi_logger = { workspace = true }
+
+[features]
+default = []

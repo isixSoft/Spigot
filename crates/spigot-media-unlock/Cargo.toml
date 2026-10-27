@@ -4,8 +4,14 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
+spigot-logging = { workspace = true }
+chrono = { workspace = true }
+log = { workspace = true }
 reqwest = { workspace = true }
-serde = { workspace = true }
+rust_iso3166 = { workspace = true }
+serde = { workspace = true, features = ["derive"] }
 serde_json = { workspace = true }
-anyhow = { workspace = true }
-regex = { workspace = true }
+tokio = { workspace = true }
+
+[lints]
+workspace = true
