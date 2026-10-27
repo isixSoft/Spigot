@@ -1,6 +1,6 @@
 # Spigot agent SPEC
 
-**Status**: draft-for-execution · 2026-10-26  
+**Status**: active · 2026-10-26 (owner decisions locked)  
 **Owner**: isixSoft  
 **Scope**: work the hourly agent (and humans) may do **before** a full product rewrite.
 
@@ -23,6 +23,29 @@ Related history (not a queue): root `MODIFICATIONS.md`.
 
 ---
 
+## Owner decisions (2026-10-26)
+
+| # | Decision |
+|---|----------|
+| 1 | **Pool path**: `GET` on the **same origin** as `pushUrl`, path `/push` (same host; `switchUrlOf` → `/switch`). Document variable names only in `.env.example` when added. |
+| 2 | **M2 source list**: Expected to live in a **config file under `scripts/`** listing pages/URLs the owner wants fetched. **Audit 2026-10-26: no such file exists** → **BUG-M2-001** (owner will fix; agent must not invent URLs). |
+| 3 | **Live / real Deno**: Owner will smoke-test manually when free. **M1 `done` = offline mock contract tests only** (T1–T4). T7 stays optional and is not a gate. |
+
+---
+
+## Known bugs blocking or shaping the queue
+
+### BUG-M2-001 — missing scrape-sources config
+
+- **Found**: 2026-10-26
+- **Expected**: A config under `scripts/` (e.g. `scripts/node-sources.json` or similar) listing GitHub pages / raw / gist URLs to fetch for node tests.
+- **Actual**: No such file. `scripts/` only has build/portable/i18n/updater helpers. No `filename:sources*`, no `raw.githubusercontent` references in app code except the **GeoIP CSV** hardcode in `deno-push.ts` (`sapics/ip-location-db`), which is **not** the node-list source list.
+- **Also missing**: `src/services/fixtures/github-nodes/` (SPEC placeholder; not created yet).
+- **Owner action**: add the config (and optionally seed fixtures).
+- **Agent action until fixed**: M2 offline work may use **synthetic** fixtures only; **do not** invent public scrape URLs. T6 (`SPIGOT_NET=1`) stays blocked until BUG-M2-001 is closed or owner pastes URLs into the config.
+
+---
+
 ## M1 — 打通读写 (Deno bidirectional)
 
 ### Goal
@@ -34,33 +57,31 @@ Prove and lock the **write path** (client → Deno `/push`) and the **read path*
 | Direction | Client | Server (nodes-sub / Deno Deploy — out of this repo) |
 |-----------|--------|------------------------------------------------------|
 | Write | `pushRows` / `pushToDeno` → `POST pushUrl` + key | `/push` |
-| Read pool | `fetchRemotePool` → `GET` same origin as push | `GET /push` (or documented pool URL) |
-| Read switch | `setServiceState` / switch UI → `switchUrlOf(pushUrl)` | `/switch` |
+| Read pool | `fetchRemotePool` → `GET` same origin as push | **`GET /push`** (locked) |
+| Read switch | switch UI → `switchUrlOf(pushUrl)` | `/switch` |
 
-Pure helpers already unit-tested: `pickForPush`, `switchUrlOf`, `nameOfUri`, GeoIP, `toShareUri`, etc. **Missing: contract tests against a real or mocked HTTP boundary for both directions.**
+Pure helpers already unit-tested: `pickForPush`, `switchUrlOf`, `nameOfUri`, GeoIP, `toShareUri`, etc. **Missing: contract tests against a mocked HTTP boundary for both directions.**
 
 ### Acceptance
 
 #### M1.1 Write path (client → server)
 
-- [ ] Given a **mock** HTTP server (or recorded fixture) that accepts `POST` with the project’s auth header/body shape, `pushRows` sends the expected payload and treats 2xx as success.
+- [ ] Given a **mock** HTTP server that accepts `POST` with the project’s auth header/body shape, `pushRows` sends the expected payload and treats 2xx as success.
 - [ ] Non-2xx and network failure surface a **structured** error (no silent empty success).
 - [ ] `minKeep` / empty selection: client **refuses** to push when below threshold (existing product rule); test locks that behaviour.
-- [ ] Optional `needs-live`: with `DENO_PUSH_URL` + `DENO_PUSH_KEY` in env (not in git), one live POST of **fixture URIs** succeeds and is documented in agent-log only as pass/fail (no key echo).
 
 #### M1.2 Read path (server → client)
 
 - [ ] `fetchRemotePool` parses a fixture body that matches the server’s list format (including `#OFF# ` disabled prefix if still in protocol).
-- [ ] Round-trip invariant test: **push fixture set → fetch pool → names/URIs contain the pushed set** (mock server implementing both POST and GET).
-- [ ] `switchUrlOf` already unit-tested; add one integration-level test that the switch request URL and method match the agreed API (mock).
-- [ ] Optional `needs-live`: GET pool and toggle switch against env endpoint; log pass/fail only.
+- [ ] Round-trip invariant test: **push fixture set → fetch pool → names/URIs contain the pushed set** (mock server implementing both POST and GET on `/push`).
+- [ ] Switch request URL/method contract against mock (builds on existing `switchUrlOf` unit tests).
 
 #### M1.3 Definition of done for M1
 
-- All **non-`needs-live`** boxes checked.
-- `pnpm test` (or project’s vitest invocation in CI) green on the new tests.
-- Short section in agent-log: “M1 contract tests landed”.
-- Live checks remain optional until owner provides env and a reachable Deno deployment.
+- All boxes in M1.1–M1.2 checked (mock only).
+- `pnpm test` green on the new tests.
+- Agent-log note: “M1 contract tests landed”.
+- **Live Deno is owner-owned** (decision 3); not required for M1 done.
 
 ### Out of scope for M1
 
@@ -74,40 +95,40 @@ Pure helpers already unit-tested: `pickForPush`, `switchUrlOf`, `nameOfUri`, Geo
 
 ### Goal
 
-Automated tests for **nodes (or node lists) that can be fetched from GitHub** — i.e. content addressable via `raw.githubusercontent.com`, `gist.githubusercontent.com`, or a **pinned release asset URL** — so parsing and pipeline behaviour does not depend on a running Clash core.
+Automated tests for **nodes (or node lists) that can be fetched from GitHub** — raw / gist / release asset — so parsing and pipeline behaviour does not depend on a running Clash core.
 
-### Interpretation (locked unless owner amends)
+### Interpretation
 
 | In scope | Out of scope |
 |----------|----------------|
-| Share-URI lines and base64 subscription **fixtures** stored in-repo under `src/services/fixtures/github-nodes/` | Scraping arbitrary HTML repo pages |
-| Optional test that **HTTP GET** to a **documented, stable, public** raw/gist URL still returns 200 and parseable lines (mark `network` / skip in offline CI) | Committing secrets or private gist tokens |
-| Feeding those URIs through `nameOfUri`, `toShareUri` inverse checks where applicable, and `pickForPush` with synthetic delay/cc | Claiming the nodes are “good” or US without fixture metadata |
-
-GeoIP CSV already uses a GitHub release URL (`sapics/ip-location-db`); that remains a **dependency**, not the whole of M2. M2 is about **proxy node material**, not the GeoIP database.
+| Config-driven URL list under `scripts/` (**BUG-M2-001** until present) | Inventing scrape targets without owner config |
+| In-repo fixtures under `src/services/fixtures/github-nodes/` (synthetic OK until config exists) | Scraping arbitrary HTML without a listed URL |
+| Offline parse + `pickForPush` determinism | Committing secrets |
+| Optional net probe only after config lists URLs | Treating GeoIP CSV URL as the node source list |
 
 ### Acceptance
 
-#### M2.1 Fixtures
+#### M2.1 Fixtures / config
 
-- [ ] Add at least **one** fixture file of share URIs (and optionally one base64 subscription blob) under `src/services/fixtures/github-nodes/`, with a one-line `README` stating origin (public gist/raw URL or “synthetic”).
-- [ ] Parser helper (new small export or test-local): split lines, ignore comments/empties, collect `vless`/`trojan`/`vmess`/`ss`/`anytls` schemes.
+- [ ] **BUG-M2-001 closed**: `scripts/` contains the owner’s source URL config (format owner chooses; document path in this SPEC when added).
+- [ ] At least one fixture under `src/services/fixtures/github-nodes/` (synthetic allowed while bug open).
+- [ ] Parser helper: split lines, ignore comments/empties, collect supported schemes.
 
-#### M2.2 Offline tests (required)
+#### M2.2 Offline tests (required for M2 done)
 
 - [ ] Fixture parses to a non-zero list of URIs.
 - [ ] `nameOfUri` on fixture lines does not throw; empty fragment → `''`.
-- [ ] Building `NodeRow`-like objects from fixture + synthetic `cc`/`delay` and running `pickForPush` yields **deterministic** counts (snapshot or explicit expect).
+- [ ] `pickForPush` with synthetic `cc`/`delay` yields deterministic counts.
 
-#### M2.3 Online probe (optional, skippable)
+#### M2.3 Online probe (optional; blocked on BUG-M2-001)
 
-- [ ] Test marked skip without `SPIGOT_NET=1`: GET owner-approved public raw URL, expect 200, body contains at least one `://` share line.
-- [ ] Failure mode: timeout / non-200 → test fail only when `SPIGOT_NET=1`, else skip.
+- [ ] With `SPIGOT_NET=1`, GET each URL from the scripts config; expect 200 and at least one share line where applicable.
+- [ ] Without `SPIGOT_NET=1`, skip.
 
 #### M2.4 Definition of done for M2
 
-- M2.1 + M2.2 green in default CI (`pnpm test`).
-- M2.3 documented in SPEC and agent-log; not required for `done` if network is flaky.
+- M2.1 (bug closed + fixture) + M2.2 green in default CI.
+- M2.3 not required for `done`.
 
 ---
 
@@ -119,30 +140,20 @@ GeoIP CSV already uses a GitHub release URL (`sapics/ip-location-db`); that rema
 | T2 | M1 | Mock HTTP: `fetchRemotePool` + `#OFF#` | — |
 | T3 | M1 | Mock round-trip push → get | T1, T2 |
 | T4 | M1 | Switch request contract (mock) | — |
-| T5 | M2 | Fixtures + parse + `pickForPush` offline tests | — |
-| T6 | M2 | Optional `SPIGOT_NET=1` raw GitHub GET | T5 |
-| T7 | M1 | Optional live Deno env smoke | T3 |
+| T5 | M2 | Synthetic fixtures + parse + `pickForPush` offline | — |
+| T6 | M2 | `SPIGOT_NET=1` GET from scripts config | T5 + **BUG-M2-001 fixed** |
+| T7 | M1 | Live Deno smoke | T3 + owner env; **owner-run, not agent gate** |
 
-Agent should take **lowest ID not done**. Mark items in this file’s checkboxes when merging.
+Agent takes **lowest ID not done**. T6 must not invent URLs.
 
 ---
 
 ## Automation (not enabled until owner says so)
 
-Planned behaviour for a future Spigot hourly agent:
-
 1. Read this SPEC + `docs/agent-log/`.
-2. Implement next open `T*` item on a branch `agent/tN-short-name`.
-3. Run `pnpm test` (and typecheck if already in CI).
+2. Implement next open `T*` on branch `agent/tN-short-name`.
+3. Run `pnpm test` (and typecheck if in CI).
 4. Open PR or push branch; append agent-log.
-5. Stop after one item per hour.
+5. One item per hour max.
 
-**Do not enable the automation until T1–T5 acceptance text is still accurate and owner confirms.**
-
----
-
-## Open points for owner (do not block T1–T5)
-
-1. Exact Deno Deploy base URL and whether pool is `GET /push` or another path (document in `.env.example` only as variable names).
-2. Preferred public GitHub raw/gist URL for M2.3, if any; otherwise synthetic fixtures only.
-3. Whether live T7 is required before declaring M1 “done” for product use.
+**Do not enable until owner confirms.**
