@@ -1,13 +1,13 @@
 [workspace]
 members = [
   "src-tauri",
-  "crates/clash-verge-draft",
-  "crates/clash-verge-media-unlock",
-  "crates/clash-verge-logging",
-  "crates/clash-verge-signal",
-  "crates/tauri-plugin-clash-verge-sysinfo",
-  "crates/clash-verge-i18n",
-  "crates/clash-verge-limiter",
+  "crates/spigot-draft",
+  "crates/spigot-media-unlock",
+  "crates/spigot-logging",
+  "crates/spigot-signal",
+  "crates/tauri-plugin-spigot-sysinfo",
+  "crates/spigot-i18n",
+  "crates/spigot-limiter",
 ]
 resolver = "2"
 
@@ -47,13 +47,13 @@ codegen-units = 1
 split-debuginfo = "unpacked"
 
 [workspace.dependencies]
-clash-verge-draft = { path = "crates/clash-verge-draft" }
-clash-verge-media-unlock = { path = "crates/clash-verge-media-unlock" }
-clash-verge-logging = { path = "crates/clash-verge-logging" }
-clash-verge-signal = { path = "crates/clash-verge-signal" }
-clash-verge-i18n = { path = "crates/clash-verge-i18n" }
-clash-verge-limiter = { path = "crates/clash-verge-limiter" }
-tauri-plugin-clash-verge-sysinfo = { path = "crates/tauri-plugin-clash-verge-sysinfo" }
+spigot-draft = { path = "crates/spigot-draft" }
+spigot-media-unlock = { path = "crates/spigot-media-unlock" }
+spigot-logging = { path = "crates/spigot-logging" }
+spigot-signal = { path = "crates/spigot-signal" }
+spigot-i18n = { path = "crates/spigot-i18n" }
+spigot-limiter = { path = "crates/spigot-limiter" }
+tauri-plugin-spigot-sysinfo = { path = "crates/tauri-plugin-spigot-sysinfo" }
 
 tauri = { version = "2.11.5" }
 tauri-plugin-clipboard-manager = "2.3.2"
@@ -97,10 +97,6 @@ windows-sys = { version = "0.61.2", features = [
 # *********************************
 
 [workspace.lints.clippy]
-# fallible_impl_from = "deny" // 过于激进，暂时不开启
-# implicit_clone = "deny" // 可能会造成额外开销，暂时不开启
-# option_if_let_else = "deny" // 过于激进，暂时不开启
-# self_only_used_in_recursion = "deny" // Since 1.92.0
 async_yields_async = "deny"
 await_holding_lock = "deny"
 branches_sharing_code = "deny"

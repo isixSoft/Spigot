@@ -1,11 +1,11 @@
 [package]
-name = "clash-verge"
+name = "spigot"
 version = "1.0.0"
-description = "clash verge"
+description = "Spigot"
 authors = ["zzzgydi", "Tunglies", "wonfen", "MystiPanda"]
 license = "GPL-3.0-only"
-repository = "https://github.com/clash-verge-rev/clash-verge-rev.git"
-default-run = "clash-verge"
+repository = "https://github.com/isixSoft/Spigot.git"
+default-run = "spigot"
 build = "build.rs"
 edition = "2024"
 rust-version = "1.95"
@@ -31,13 +31,13 @@ identifier = "io.github.isixsoft.spigot"
 tauri-build = { version = "2.6.3", features = [] }
 
 [dependencies]
-clash-verge-draft = { workspace = true }
-clash-verge-media-unlock = { workspace = true }
-clash-verge-logging = { workspace = true }
-clash-verge-signal = { workspace = true }
-clash-verge-i18n = { workspace = true }
-clash-verge-limiter = { workspace = true }
-tauri-plugin-clash-verge-sysinfo = { workspace = true }
+spigot-draft = { workspace = true }
+spigot-media-unlock = { workspace = true }
+spigot-logging = { workspace = true }
+spigot-signal = { workspace = true }
+spigot-i18n = { workspace = true }
+spigot-limiter = { workspace = true }
+tauri-plugin-spigot-sysinfo = { workspace = true }
 tauri-plugin-clipboard-manager = { workspace = true }
 tauri = { workspace = true, features = [
   "protocol-asset",
