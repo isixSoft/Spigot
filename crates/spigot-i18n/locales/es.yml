@@ -1,0 +1,93 @@
+_version: 1
+notifications:
+  dashboardToggled:
+    title: Panel
+    body: La visibilidad del panel se ha actualizado.
+  clashModeChanged:
+    title: Cambio de modo
+    body: Cambiado a {mode}.
+  systemProxyToggled:
+    title: Proxy del sistema
+    'on': El proxy del sistema se ha activado.
+    'off': El proxy del sistema se ha desactivado.
+  systemProxyFailed:
+    title: Proxy del sistema
+    body: No se pudo configurar el proxy del sistema. Abra Clash Verge para ver el motivo.
+  systemProxyGuardStopped:
+    title: Guardián del proxy del sistema
+    body: El guardián se detuvo tras varios fallos. Abra Clash Verge para ver el motivo.
+  tunModeToggled:
+    title: Modo TUN
+    'on': El modo TUN se ha activado.
+    'off': El modo TUN se ha desactivado.
+  lightweightModeEntered:
+    title: Modo ligero
+    body: Se ha entrado en modo ligero.
+  profilesReactivated:
+    title: Perfiles
+    body: Perfil reactivado.
+  appQuit:
+    title: A punto de salir
+    body: Clash Verge está a punto de salir.
+  appHidden:
+    title: Aplicación oculta
+    body: Clash Verge se está ejecutando en segundo plano.
+  updateReady:
+    title: Actualización de Clash Verge
+    body: Se ha descargado una nueva versión (v{version}) y está lista para instalar.
+    installNow: Instalar ahora
+    later: Más tarde
+service:
+  adminInstallPrompt: La instalación del servicio Clash Verge requiere privilegios de administrador.
+  adminUninstallPrompt: La desinstalación del servicio Clash Verge requiere privilegios de administrador.
+launchGuard:
+  currentExeError: 'No se pudo determinar la ubicación de la aplicación: {error}'
+  homeDirError: 'No se pudo determinar el directorio de inicio del usuario. La aplicación se cerrará: {error}'
+  translocated: macOS está ejecutando esta aplicación desde una ruta temporal de App Translocation. Muévala manualmente a /Applications o ~/Applications en el Finder y ábrala de nuevo.
+  rejected: |-
+    Esta aplicación debe iniciarse desde un directorio Applications.
+
+    {reason}
+  notInBundle: El ejecutable no está dentro de un paquete de aplicación.
+  canonicalizeBundleError: 'No se pudo resolver la ruta del paquete de aplicación: {error}'
+  bundleNameError: No se pudo determinar el nombre del paquete de aplicación. La aplicación se cerrará.
+  replacePrompt: Ya existe una aplicación en {destination}. ¿Reemplazarla y reiniciar desde Applications?
+  movePrompt: Para iniciar el servicio en segundo plano de forma segura, la aplicación debe moverse a {destination}. ¿Mover y reiniciar ahora?
+  createApplicationsDirError: 'No se pudo crear el directorio Applications: {error}'
+  moveFailed: Error al mover la aplicación. Muévala manualmente en el Finder e inténtelo de nuevo.
+  replaceFailed: 'No se pudo reemplazar la aplicación existente de forma segura: {error}'
+  relaunchFailed: La aplicación se copió, pero no se pudo reiniciar automáticamente. Ábrala manualmente desde Applications.
+  cancel: Cancelar
+  move: Mover
+  ok: Aceptar
+tray:
+  dashboard: Panel
+  ruleMode: Modo de reglas
+  globalMode: Modo global
+  directMode: Modo directo
+  outboundModes: Modos de salida
+  rule: Regla
+  direct: Directo
+  global: Global
+  profiles: Perfiles
+  proxies: Proxies
+  systemProxy: Proxy del sistema
+  tunMode: Modo TUN
+  closeAllConnections: Cerrar todas las conexiones
+  lightweightMode: Modo ligero
+  copyEnv: Copiar variables de entorno
+  confDir: Directorio de configuración
+  coreDir: Directorio del núcleo
+  logsDir: Directorio de registros
+  openDir: Abrir directorio
+  appLog: Registro de la aplicación
+  coreLog: Registro del núcleo
+  restartClash: Reiniciar núcleo Clash
+  restartApp: Reiniciar aplicación
+  vergeVersion: Versión de Verge
+  more: Más
+  exit: Salir
+  tooltip:
+    systemProxy: Proxy del sistema
+    tun: TUN
+    profile: Perfil

@@ -1,0 +1,93 @@
+_version: 1
+notifications:
+  dashboardToggled:
+    title: Übersicht
+    body: Die Sichtbarkeit der Übersicht wurde aktualisiert.
+  clashModeChanged:
+    title: Moduswechsel
+    body: Zu {mode} gewechselt.
+  systemProxyToggled:
+    title: Systemproxy
+    'on': Der Systemproxy wurde aktiviert.
+    'off': Der Systemproxy wurde deaktiviert.
+  systemProxyFailed:
+    title: Systemproxy
+    body: Der Systemproxy konnte nicht gesetzt werden. Öffnen Sie Clash Verge, um den Grund zu sehen.
+  systemProxyGuardStopped:
+    title: Systemproxy-Wächter
+    body: Der Wächter wurde nach mehreren fehlgeschlagenen Läufen gestoppt. Öffnen Sie Clash Verge, um den Grund zu sehen.
+  tunModeToggled:
+    title: TUN-Modus
+    'on': Der TUN-Modus wurde aktiviert.
+    'off': Der TUN-Modus wurde deaktiviert.
+  lightweightModeEntered:
+    title: Leichtgewichtsmodus
+    body: Leichtgewichtsmodus aktiviert.
+  profilesReactivated:
+    title: Profile
+    body: Profil reaktiviert.
+  appQuit:
+    title: Beenden
+    body: Clash Verge wird beendet.
+  appHidden:
+    title: Anwendung versteckt
+    body: Clash Verge läuft im Hintergrund.
+  updateReady:
+    title: Clash Verge Update
+    body: Eine neue Version (v{version}) wurde heruntergeladen und ist bereit zur Installation.
+    installNow: Jetzt installieren
+    later: Später
+service:
+  adminInstallPrompt: Die Installation des Clash Verge-Dienstes erfordert Administratorrechte.
+  adminUninstallPrompt: Die Deinstallation des Clash Verge-Dienstes erfordert Administratorrechte.
+launchGuard:
+  currentExeError: 'Anwendungspfad konnte nicht bestimmt werden: {error}'
+  homeDirError: 'Home-Verzeichnis konnte nicht bestimmt werden. Die Anwendung wird beendet: {error}'
+  translocated: macOS führt diese Anwendung von einem temporären App Translocation-Pfad aus. Verschieben Sie sie manuell in /Applications oder ~/Applications und öffnen Sie sie erneut.
+  rejected: |-
+    Diese Anwendung muss aus einem Applications-Verzeichnis gestartet werden.
+
+    {reason}
+  notInBundle: Die ausführbare Datei befindet sich nicht in einem Anwendungspaket.
+  canonicalizeBundleError: 'Anwendungspaketpfad konnte nicht aufgelöst werden: {error}'
+  bundleNameError: Anwendungsname konnte nicht bestimmt werden. Die Anwendung wird beendet.
+  replacePrompt: Unter {destination} existiert bereits eine Anwendung. Ersetzen und aus Applications neu starten?
+  movePrompt: Zum sicheren Start des Hintergrunddienstes muss die Anwendung nach {destination} verschoben werden. Jetzt verschieben und neu starten?
+  createApplicationsDirError: 'Applications-Verzeichnis konnte nicht erstellt werden: {error}'
+  moveFailed: Verschieben der Anwendung fehlgeschlagen. Verschieben Sie sie manuell im Finder und versuchen Sie es erneut.
+  replaceFailed: 'Bestehende Anwendung konnte nicht sicher ersetzt werden: {error}'
+  relaunchFailed: Die Anwendung wurde kopiert, konnte aber nicht automatisch neu gestartet werden. Öffnen Sie sie manuell aus Applications.
+  cancel: Abbrechen
+  move: Verschieben
+  ok: OK
+tray:
+  dashboard: Übersicht
+  ruleMode: Regelmodus
+  globalMode: Globalmodus
+  directMode: Direktmodus
+  outboundModes: Ausgangsmodi
+  rule: Regel
+  direct: Direkt
+  global: Global
+  profiles: Profile
+  proxies: Proxys
+  systemProxy: Systemproxy
+  tunMode: TUN-Modus
+  closeAllConnections: Alle Verbindungen schließen
+  lightweightMode: Leichtgewichtsmodus
+  copyEnv: Umgebungsvariablen kopieren
+  confDir: Konfigurationsverzeichnis
+  coreDir: Kernverzeichnis
+  logsDir: Protokollverzeichnis
+  openDir: Verzeichnis öffnen
+  appLog: Anwendungsprotokoll
+  coreLog: Kernprotokoll
+  restartClash: Clash-Kern neu starten
+  restartApp: Anwendung neu starten
+  vergeVersion: Verge-Version
+  more: Mehr
+  exit: Beenden
+  tooltip:
+    systemProxy: Systemproxy
+    tun: TUN
+    profile: Profil
